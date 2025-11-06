@@ -100,26 +100,6 @@ def generate_answer(history):
     
     return response.choices[0].message.content
 
-def get_embeddings(text):
-    response = client.embeddings.create(
-        model='text-embedding-3-small',
-        input=text
-    )
-
-    embedding_data = response.data[0].embedding
-    return embedding_data
-
-def cosine_similarity(vector1, vector2):
-    vector1 = np.array(vector1)
-    vector2 = np.array(vector2)
-    
-    dot_product = np.dot(vector1, vector2)
-    magnitue1 = np.linalg.norm(vector1)
-    magnitue2 = np.linalg.norm(vector2)
-    
-    return dot_product/(magnitue1 * magnitue2)
-
-
 if collection.count() == 0:
     print('Database Kosong, Menambahkan Semua Dokumen ke db')
     add_documents_to_db('knowledge_base')
@@ -153,7 +133,7 @@ print('RAG CHATBOT')
 while True:
     raw_query = input('You: ').strip()
     
-    #Enhance User Query
+    #Enhance User Query (OPTIONAL)
     openrouter_client = OpenAI(
         base_url='https://openrouter.ai/api/v1',
         api_key=os.getenv('OPENROUTER_API_KEY')
